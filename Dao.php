@@ -19,13 +19,18 @@ class Dao {
 
     public function addStudent($student){
         $conn = $this->getConnection();
-        // random student number generator here or in newstudent
-        // random email gen
+        $conn->query("INSERT INTO students", PDO::FETCH_ASSOC);
+        // TODO: make query
     }
 
     public function getClasses($studentID){
         $conn = $this->getConnection();
         $retval = $conn->query("SELECT class, class_code, semester FROM classes WHERE studentID='{$studentID}'", PDO::FETCH_ASSOC);
+    }
+
+    public function addClass($studentID, $classCode){
+        $conn = $this->getConnection();
+        // TODO: make query
     }
 
     public function dupeStuID($studentID) {
