@@ -17,10 +17,17 @@ class Dao {
         }
     }
 
-    public function addStudent($student){
+    public function addStudent($studentID, $firstName, $lastName, $email, $username){
         $conn = $this->getConnection();
-        $conn->query("INSERT INTO students", PDO::FETCH_ASSOC);
-        // TODO: make query
+        $setQuery = "INSERT INTO students(studentID, firstName, lastName, email, username) VALUES (:studentID, :firstName, :lastName, :email, :username)";
+        $q = $conn->prepare($setQuery);
+        $q->bindParam(":studentID", $studentID);
+        $q->bindParam(":firstName", $firstName);
+        $q->bindParam(":lastName", $lastName);
+        $q->bindParam(":email", $email);
+        $q->bindParam(":username", $username);
+        $q->execute();
+        // TODO: Check Query
     }
 
     public function getClasses($studentID){
@@ -28,9 +35,16 @@ class Dao {
         $retval = $conn->query("SELECT class, class_code, semester FROM classes WHERE studentID='{$studentID}'", PDO::FETCH_ASSOC);
     }
 
-    public function addClass($studentID, $classCode){
+    public function addClass($studentID, $code, $class, $semester){
         $conn = $this->getConnection();
-        // TODO: make query
+        $setQuery = "INSERT INTO classes(studentID, code, class, semester) VALUES (:studentID, :code, :class, :semester)";
+        $q = $conn->prepare($setQuery);
+        $q->bindParam(":studentID", $studentID);
+        $q->bindParam(":code", $code);
+        $q->bindParam(":class", $class);
+        $q->bindParam(":semester", $semeseter);
+        $q->execute();
+        // TODO: Check Query
     }
 
     public function dupeStuID($studentID) {
