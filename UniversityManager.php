@@ -12,9 +12,9 @@ fwrite(STDOUT,"c.) Enroll a student\n");
 fwrite(STDOUT,"d.) Drop a student\n");
     
 while($val!="exit\n") {
-
     fwrite(STDOUT, "\$ ");
     $val=fgets(STDIN);
+    
     if($val=="a\n") {
         fwrite(STDOUT,"Create a class\n");
     } else if($val=="b\n") {
