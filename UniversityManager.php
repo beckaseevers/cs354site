@@ -5,6 +5,7 @@ require_once "UniClass.php";
 
 $dao = new Dao();
 $newClass;
+$classes=array();
 
 $val='';
 fwrite(STDOUT,"What would you like to do?\n");
@@ -31,8 +32,34 @@ while($val!="exit\n") {
 
         fwrite(STDOUT, "\nClass created. Details below:\n\n");
         fwrite(STDOUT, $newClass->stringRep());
+        
+        fwrite(STDOUT, "\nDoes this all look right?[y/n] ");
+        $confirmation=fgets(STDIN);
+        $confirmation=str_replace("\n","",$confirmation);
+        if($confirmation=="y") {
+            //add class
+            $classes[]=$newClass;
+            fwrite(STDOUT, "Class created successfully\n\n");
+            fwrite(STDOUT,"What would you like to do?\n");
+            fwrite(STDOUT,"a.) Create a class\n");
+            fwrite(STDOUT,"b.) Delete a class\n");
+            fwrite(STDOUT,"c.) Enroll a student\n");
+            fwrite(STDOUT,"d.) Drop a student\n");
+        } else {
+            fwrite(STDOUT, "Please try again\n\n");
+            fwrite(STDOUT,"What would you like to do?\n");
+            fwrite(STDOUT,"a.) Create a class\n");
+            fwrite(STDOUT,"b.) Delete a class\n");
+            fwrite(STDOUT,"c.) Enroll a student\n");
+            fwrite(STDOUT,"d.) Drop a student\n");
+        }
     } else if($val=="b\n") {
-        fwrite(STDOUT,"Delete a class\n");
+        fwrite(STDOUT,"Which class would you like to delete? (give course number)");
+        foreach($classes as $class) {
+            fwrite(STDOUT, $class->getTableRow());
+        }
+        $deleteID=fgets(STDIN);
+        print_r($classes);
     } else if($val=="c\n") {
         fwrite(STDOUT,"Enroll a student\n");
     } else if($val=="d\n") {

@@ -43,11 +43,10 @@ class Dao {
         $retval = $conn->query("SELECT class, class_code, semester FROM classes WHERE studentID='{$studentID}'", PDO::FETCH_ASSOC);
     }
 
-    public function addClass($studentID, $code, $class, $semester){
+    public function addClass($code, $class, $semester){
         $conn = $this->getConnection();
-        $setQuery = "INSERT INTO classes(studentID, code, class, semester) VALUES (:studentID, :code, :class, :semester)";
+        $setQuery = "INSERT INTO classes(class_code, class, semester) VALUES (:code, :class, :semester)";
         $q = $conn->prepare($setQuery);
-        $q->bindParam(":studentID", $studentID);
         $q->bindParam(":code", $code);
         $q->bindParam(":class", $class);
         $q->bindParam(":semester", $semeseter);
