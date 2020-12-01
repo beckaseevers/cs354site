@@ -5,15 +5,18 @@ require_once "UniClass.php";
 
 $dao = new Dao();
 $newClass;
-$classes=array();
 
 $val='';
-fwrite(STDOUT,"What would you like to do?\n");
-fwrite(STDOUT,"a.) Create a class\n");
-fwrite(STDOUT,"b.) Delete a class\n");
-fwrite(STDOUT,"c.) Enroll a student\n");
-fwrite(STDOUT,"d.) Drop a student\n");
+function printOptions() {
+    fwrite(STDOUT,"What would you like to do?\n");
+    fwrite(STDOUT,"a.) Create a class\n");
+    fwrite(STDOUT,"b.) Delete a class\n");
+    fwrite(STDOUT,"c.) Enroll a student\n");
+    fwrite(STDOUT,"d.) Drop a student\n");
+}
     
+printOptions();
+
 while($val!="exit\n") {
     fwrite(STDOUT, "\$ ");
     $val=fgets(STDIN);
@@ -38,28 +41,25 @@ while($val!="exit\n") {
         $confirmation=str_replace("\n","",$confirmation);
         if($confirmation=="y") {
             //add class
-            $classes[]=$newClass;
+            $dao->addClass($classCode,$className,$classSem);
             fwrite(STDOUT, "Class created successfully\n\n");
-            fwrite(STDOUT,"What would you like to do?\n");
-            fwrite(STDOUT,"a.) Create a class\n");
-            fwrite(STDOUT,"b.) Delete a class\n");
-            fwrite(STDOUT,"c.) Enroll a student\n");
-            fwrite(STDOUT,"d.) Drop a student\n");
+            printOptions();
         } else {
             fwrite(STDOUT, "Please try again\n\n");
-            fwrite(STDOUT,"What would you like to do?\n");
-            fwrite(STDOUT,"a.) Create a class\n");
-            fwrite(STDOUT,"b.) Delete a class\n");
-            fwrite(STDOUT,"c.) Enroll a student\n");
-            fwrite(STDOUT,"d.) Drop a student\n");
+            printOptions();
         }
     } else if($val=="b\n") {
-        fwrite(STDOUT,"Which class would you like to delete? (give course number)");
-        foreach($classes as $class) {
-            fwrite(STDOUT, $class->getTableRow());
+        fwrite(STDOUT,"Which class would you like to delete? (give course number)\n\n");
+        foreach($dao->getClasses() as $class) {
+            fwrite(STDOUT,"Code: ".$class['class_code']." Name: ".$class['class']." Semester: ".$class['semester']."\n");
         }
+        frwite(STDOUT,"\n");
         $deleteID=fgets(STDIN);
-        print_r($classes);
+        $deleteID=str_replace("\n","",$deleteID);
+
+        //TODO -- NEED TO CHECK IF DELETEID EXISTS IN CLASSES
+        $res=$dao->deleteClass($deleteID);
+        fwrite(STDOUT,"Class successfully deleted.\n\n");
     } else if($val=="c\n") {
         fwrite(STDOUT,"Enroll a student\n");
     } else if($val=="d\n") {

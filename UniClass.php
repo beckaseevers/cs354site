@@ -28,8 +28,4 @@ class UniClass {
     public function stringRep() {
         return "Class code: ".$this->code."\nClass name: ".$this->class."\nClass semester: ".$this->semester."\n";
     }
-
-    public function getTableRow() {
-        return "Class code: ".$this->code." Class name: ".$this->class." Class semester: ".$this->semester."\n";
-    }
 }

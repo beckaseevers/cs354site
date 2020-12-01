@@ -38,18 +38,32 @@ class Dao {
         return $q->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getClasses($studentID){
+    public function getClasses() {
+        $conn = $this->getConnection();
+        $retval = $conn->query("SELECT * FROM classes", PDO::FETCH_ASSOC);
+        return $retval;
+    }
+
+    public function deleteClass($class_id) {
+        $conn=$this->getConnection();
+        $query="DELETE FROM classes WHERE class_code=:class_id";
+        $q=$conn->prepare($query);
+        $q->bindParam(":class_id",$class_id);
+        $q->execute();
+    }
+
+    public function getStudentClasses($studentID){
         $conn = $this->getConnection();
         $retval = $conn->query("SELECT class, class_code, semester FROM classes WHERE studentID='{$studentID}'", PDO::FETCH_ASSOC);
     }
 
     public function addClass($code, $class, $semester){
         $conn = $this->getConnection();
-        $setQuery = "INSERT INTO classes(class_code, class, semester) VALUES (:code, :class, :semester)";
+        $setQuery = "INSERT INTO classes (class_code, class, semester) VALUES (:code, :class, :semester)";
         $q = $conn->prepare($setQuery);
         $q->bindParam(":code", $code);
         $q->bindParam(":class", $class);
-        $q->bindParam(":semester", $semeseter);
+        $q->bindParam(":semester", $semester);
         $q->execute();
     }
 
