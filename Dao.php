@@ -52,7 +52,6 @@ class Dao {
         $q->bindParam(":class", $class);
         $q->bindParam(":semester", $semeseter);
         $q->execute();
-        // TODO: Check Query
     }
 
     public function dupeStuID($studentID) {
