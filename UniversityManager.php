@@ -9,6 +9,6 @@ fwrite(STDOUT, 'What is your last name?');
 $last=fgets(STDIN);
 $last=str_replace("\n",'',$last);
 $student = new Student($first, $last);
-print_r($student);
+fwrite(STDOUT, $student->getUser());
 $dao = new Dao();
 print_r($dao->getStudents());
