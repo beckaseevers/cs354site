@@ -1,6 +1,5 @@
 <?php
-include_once "Dao.php";
-$dao = new Dao();
+require_once "Dao.php";
 
 class Student {
 
@@ -9,19 +8,21 @@ class Student {
     public $email;
     public $firstname;
     public $lastname;
+    public $dao;
     
     public function __construct($firstname, $lastname) {
+        $this->dao = new Dao();
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $tmpname = $firstname . $lastname;
-        $this->username = newUsername($tmpname);
-        $this->studentID = newID();
-        $this->email = newEmail($username);
+        $this->username = $this->newUsername($tmpname);
+        $this->studentID = $this->newID();
+        $this->email = $this->newEmail($username);
     }
 
     public function newUsername($tmpname) {
         // check if username is already taken, if so increment end digits
-        $dup = $dao->userExists($tmpname);
+        $dup = $this->dao->userExists($tmpname);
         if (isset($dup) && !empty($dup)){
             if(preg_match_all('!\d+!', $tmpname, $matches)) {
                 $endDig = $matches[0][0];
@@ -30,7 +31,7 @@ class Student {
             } else {
                 $tmpname .= 1;
             }
-            newUsername($tmpname);
+            $this->newUsername($tmpname);
         }
         return $tmpname;
     }
@@ -41,9 +42,9 @@ class Student {
             $stuID .= rand(0, 9);
         }
         // check if stuID already exists, if so, do it again
-        $dup = $dao->dupeStuID($stuID);
+        $dup = $this->dao->dupeStuID($stuID);
         if (isset($dup) && !empty($dup)) {
-            newID();
+            $this->newID();
         }
         return $stuID;
     }
@@ -51,5 +52,4 @@ class Student {
     public function newEmail($user) {
         return $user . "@phpschool.edu";
     }
-    
 }
