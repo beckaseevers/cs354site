@@ -30,6 +30,14 @@ class Dao {
         // TODO: Check Query
     }
 
+    public function getStudents() {
+        $conn=$this->getConnection();
+        $setQuery = "SELECT * FROM students";
+        $q=$conn->prepare($setQuery);
+        $q->execute();
+        return $q->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getClasses($studentID){
         $conn = $this->getConnection();
         $retval = $conn->query("SELECT class, class_code, semester FROM classes WHERE studentID='{$studentID}'", PDO::FETCH_ASSOC);
@@ -50,13 +58,15 @@ class Dao {
     public function dupeStuID($studentID) {
         $conn = $this->getConnection();
         $retval = $conn->query("SELECT * FROM students WHERE studentID='{$studentID}'", PDO::FETCH_ASSOC);
-        return $retval;
+        $retval->execute();
+        return $retval->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function userExists($username) {
         $conn = $this->getConnection();
-        $retval = $conn->query("SELECT * FROM students WHERE username='{$username}'", PDO::FETCH_ASSOC);
-        return $retval;
+        $retval = $conn->query("SELECT * FROM students WHERE username='{$username}'");
+        $retval->execute();
+        return $retval->fetchAll(PDO::FETCH_ASSOC);
     }
     
 }

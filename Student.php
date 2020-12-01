@@ -52,4 +52,24 @@ class Student {
     public function newEmail($user) {
         return $user . "@phpschool.edu";
     }
+
+    public function getUser() {
+        return $this->username;
+    }
+
+    public function getID() {
+        return $this->studentID;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function getFirst() {
+        return $this->firstname;
+    }
+
+    public function getLast() {
+        return $this->lastname;
+    }
 }
