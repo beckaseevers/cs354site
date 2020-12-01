@@ -61,7 +61,17 @@ while($val!="exit\n") {
         $res=$dao->deleteClass($deleteID);
         fwrite(STDOUT,"Class successfully deleted.\n\n");
     } else if($val=="c\n") {
-        fwrite(STDOUT,"Enroll a student\n");
+        fwrite(STDOUT,"What is the first name of this student?\n");
+        $firstName=fgets(STDIN);
+        fwrite(STDOUT, "What is the last name of this student?\n");
+        $lastName=fgets(STDIN);
+
+        $firstName=str_replace("\n","",$firstName);
+        $lastName=str_replace("\n","",$lastName);
+
+        $student=new Student($firstName,$lastName);
+
+        fwrite(STDOUT, "\nStudent successfully enrolled.\n\n");
     } else if($val=="d\n") {
         fwrite(STDOUT,"Drop a student\n");
     } else if($val!="exit\n"){

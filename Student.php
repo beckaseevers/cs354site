@@ -18,6 +18,7 @@ class Student {
         $this->username = $this->newUsername($tmpname);
         $this->studentID = $this->newID();
         $this->email = $this->newEmail($username);
+        $this->dao->addStudent($this->studentID,$this->firstname,$this->lastname,$this->email,$this->username);
     }
 
     public function newUsername($tmpname) {
