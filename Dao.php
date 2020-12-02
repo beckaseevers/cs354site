@@ -23,7 +23,7 @@ class Dao {
         $q=$conn->prepare($setQuery);
         $q->bindParam(":username",$username);
         $q->execute();
-        return $q->fetchAll(PDO::FETCH_ASSOC);
+        return $q->fetchAll(PDO::FETCH_ASSOC)[0]['studentID'];
     }
 
     public function addToClass($sid,$cid) {
@@ -37,7 +37,6 @@ class Dao {
 
     public function addStudent($studentID, $firstName, $lastName, $email, $username){
         $conn = $this->getConnection();
-        fwrite(STDOUT,"HI");
         $setQuery = "INSERT INTO students (studentID, firstName, lastName, email, username) VALUES (:studentID, :firstName, :lastName, :email, :username)";
         $q = $conn->prepare($setQuery);
         $q->bindParam(":studentID", $studentID);
@@ -79,7 +78,16 @@ class Dao {
         $q->execute();
     }
 
+    public function deleteCourseroster($studentID) {
+        $conn=$this->getConnection();
+        $query="DELETE FROM course_roster WHERE studentID=:studentID";
+        $q=$conn->prepare($query);
+        $q->bindParam(":studentID",$studentID);
+        $q->execute();
+    }
+
     public function deleteStudent($firstName,$lastName) {
+        $this->deleteCourseRoster($this->getID(strtolower($firstName.$lastName)));
         $conn=$this->getConnection();
         $query="DELETE FROM students WHERE firstName=:firstName AND lastName=:lastName";
         $q=$conn->prepare($query);

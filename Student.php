@@ -17,8 +17,7 @@ class Student {
         $tmpname = $firstname . $lastname;
         $this->username = $this->newUsername(strtolower($tmpname));
         $this->studentID = $this->newID();
-        $this->email = $this->newEmail($username);
-        fwrite(STDOUT, $this->username.$this->studentID.$this->email.$this->firstname.$this->lastname);
+        $this->email = $this->newEmail($this->username);
         $this->dao->addStudent($this->studentID,$this->firstname,$this->lastname,$this->email,$this->username);
     }
 
@@ -40,7 +39,7 @@ class Student {
 
     public function newID() {
         $stuID = '';
-        while (strlen((string)$stuID) < 10) {
+        while (strlen((string)$stuID) < 4) {
             $stuID .= rand(0, 9);
         }
         // check if stuID already exists, if so, do it again

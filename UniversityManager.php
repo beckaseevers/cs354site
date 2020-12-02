@@ -55,7 +55,7 @@ while($val!="exit\n") {
         foreach($dao->getClasses() as $class) {
             fwrite(STDOUT,"Code: ".$class['class_code']." Name: ".$class['class']." Semester: ".$class['semester']."\n");
         }
-        frwite(STDOUT,"\n");
+        fwrite(STDOUT,"\n");
         $deleteID=fgets(STDIN);
         $deleteID=str_replace("\n","",$deleteID);
 
@@ -85,6 +85,7 @@ while($val!="exit\n") {
         $lastName=str_replace("\n","",$lastName);
 
         $dao->deleteStudent($firstName,$lastName);
+        printOptions();
     } else if($val=="e\n") {
         fwrite(STDOUT,"Which student wants to sign up for a class? (Please enter username.)\n");
         $signup=fgets(STDIN);
@@ -98,7 +99,7 @@ while($val!="exit\n") {
         $courseID=fgets(STDIN);
         $courseID=str_replace("\n","",$courseID);
 
-        $studentID=$dao->getID($signup)[0]['studentID'];
+        $studentID=$dao->getID($signup);
 
         $dao->addToClass($studentID,$courseID);
         
