@@ -15,9 +15,10 @@ class Student {
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $tmpname = $firstname . $lastname;
-        $this->username = $this->newUsername(tolower($tmpname));
+        $this->username = $this->newUsername(strtolower($tmpname));
         $this->studentID = $this->newID();
         $this->email = $this->newEmail($username);
+        fwrite(STDOUT, $this->username.$this->studentID.$this->email.$this->firstname.$this->lastname);
         $this->dao->addStudent($this->studentID,$this->firstname,$this->lastname,$this->email,$this->username);
     }
 
@@ -51,7 +52,7 @@ class Student {
     }
 
     public function newEmail($user) {
-        return $user . "@phpschool.edu";
+        return $user."@phpschool.edu";
     }
 
     public function getUser() {

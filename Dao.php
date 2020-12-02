@@ -17,9 +17,28 @@ class Dao {
         }
     }
 
+    public function getID($username) {
+        $conn=$this->getConnection();
+        $setQuery="SELECT studentID FROM students WHERE username=:username";
+        $q=$conn->prepare($setQuery);
+        $q->bindParam(":username",$username);
+        $q->execute();
+        return $q->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function addToClass($sid,$cid) {
+        $conn=$this->getConnection();
+        $setQuery="INSERT INTO course_roster (class_code, studentID) VALUES (:cid,:sid)";
+        $q=$conn->prepare($setQuery);
+        $q->bindParam(":sid",$sid);
+        $q->bindParam(":cid",$cid);
+        $q->execute();
+    }
+
     public function addStudent($studentID, $firstName, $lastName, $email, $username){
         $conn = $this->getConnection();
-        $setQuery = "INSERT INTO students(studentID, firstName, lastName, email, username) VALUES (:studentID, :firstName, :lastName, :email, :username)";
+        fwrite(STDOUT,"HI");
+        $setQuery = "INSERT INTO students (studentID, firstName, lastName, email, username) VALUES (:studentID, :firstName, :lastName, :email, :username)";
         $q = $conn->prepare($setQuery);
         $q->bindParam(":studentID", $studentID);
         $q->bindParam(":firstName", $firstName);
@@ -27,13 +46,21 @@ class Dao {
         $q->bindParam(":email", $email);
         $q->bindParam(":username", $username);
         $q->execute();
-        // TODO: Check Query
     }
 
     public function getStudents() {
         $conn=$this->getConnection();
         $setQuery = "SELECT * FROM students";
         $q=$conn->prepare($setQuery);
+        $q->execute();
+        return $q->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getRoster($cid) {
+        $conn=$this->getConnection();
+        $setQuery="SELECT * FROM students RIGHT JOIN course_roster ON students.studentID=course_roster.studentID WHERE course_roster.class_code=:cid";
+        $q=$conn->prepare($setQuery);
+        $q->bindParam(":cid",$cid);
         $q->execute();
         return $q->fetchAll(PDO::FETCH_ASSOC);
     }

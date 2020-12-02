@@ -13,6 +13,8 @@ function printOptions() {
     fwrite(STDOUT,"b.) Delete a class\n");
     fwrite(STDOUT,"c.) Enroll a student\n");
     fwrite(STDOUT,"d.) Drop a student\n");
+    fwrite(STDOUT,"e.) Register a student for a class\n");
+    fwrite(STDOUT,"f.) View roster\n");
 }
     
 printOptions();
@@ -72,6 +74,7 @@ while($val!="exit\n") {
         $student=new Student($firstName,$lastName);
 
         fwrite(STDOUT, "\nStudent successfully enrolled.\n\n");
+        printOptions();
     } else if($val=="d\n") {
         fwrite(STDOUT,"What is the first name of this student?\n");
         $firstName=fgets(STDIN);
@@ -87,7 +90,7 @@ while($val!="exit\n") {
         $signup=fgets(STDIN);
         $signup=str_replace("\n","",$signup);
 
-        fwrite(STDOUT, "Which class does this student want to take? (Please provide course number)");
+        fwrite(STDOUT, "Which class does this student want to take? (Please provide course number)\n\n");
         foreach($dao->getClasses() as $class) {
             fwrite(STDOUT,"Code: ".$class['class_code']." Name: ".$class['class']." Semester: ".$class['semester']."\n");
         }
@@ -95,9 +98,24 @@ while($val!="exit\n") {
         $courseID=fgets(STDIN);
         $courseID=str_replace("\n","",$courseID);
 
-        //TODO -- need to create new DB for classes students are signed up for
-        //        with a foreign key being the students username. 
-    }else if($val!="exit\n"){
+        $studentID=$dao->getID($signup)[0]['studentID'];
+
+        $dao->addToClass($studentID,$courseID);
+        
+        fwrite(STDOUT, "\nSuccessfully added {$signup} to {$courseID}\n\n");
+        printOptions();
+    } else if($val=="f\n") {
+        fwrite(STDOUT, "Which class would you like to view? (please provide course number)\n");
+        $courseID=fgets(STDIN);
+        $courseID=str_replace("\n","",$courseID);
+
+        fwrite(STDOUT,"\n");
+        foreach($dao->getRoster($courseID) as $student) {
+            fwrite(STDOUT," Student Name: ".$student['firstName']." ".$student['lastName']." Email: ".$student['email']." Student ID: ".$student['studentID']."\n");
+        }
+        fwrite(STDOUT,"\n");
+        printOptions();
+    } else if($val!="exit\n"){
         $val=str_replace("\n","",$val);
         fwrite(STDOUT,"$val is an invalid option, try again\n");
     }
