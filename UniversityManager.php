@@ -73,8 +73,31 @@ while($val!="exit\n") {
 
         fwrite(STDOUT, "\nStudent successfully enrolled.\n\n");
     } else if($val=="d\n") {
-        fwrite(STDOUT,"Drop a student\n");
-    } else if($val!="exit\n"){
+        fwrite(STDOUT,"What is the first name of this student?\n");
+        $firstName=fgets(STDIN);
+        fwrite(STDOUT, "What is the last name of this student?\n");
+        $lastName=fgets(STDIN);
+
+        $firstName=str_replace("\n","",$firstName);
+        $lastName=str_replace("\n","",$lastName);
+
+        $dao->deleteStudent($firstName,$lastName);
+    } else if($val=="e\n") {
+        fwrite(STDOUT,"Which student wants to sign up for a class? (Please enter username.)\n");
+        $signup=fgets(STDIN);
+        $signup=str_replace("\n","",$signup);
+
+        fwrite(STDOUT, "Which class does this student want to take? (Please provide course number)");
+        foreach($dao->getClasses() as $class) {
+            fwrite(STDOUT,"Code: ".$class['class_code']." Name: ".$class['class']." Semester: ".$class['semester']."\n");
+        }
+
+        $courseID=fgets(STDIN);
+        $courseID=str_replace("\n","",$courseID);
+
+        //TODO -- need to create new DB for classes students are signed up for
+        //        with a foreign key being the students username. 
+    }else if($val!="exit\n"){
         $val=str_replace("\n","",$val);
         fwrite(STDOUT,"$val is an invalid option, try again\n");
     }

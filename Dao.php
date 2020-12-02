@@ -52,6 +52,15 @@ class Dao {
         $q->execute();
     }
 
+    public function deleteStudent($firstName,$lastName) {
+        $conn=$this->getConnection();
+        $query="DELETE FROM students WHERE firstName=:firstName AND lastName=:lastName";
+        $q=$conn->prepare($query);
+        $q->bindParam(":firstName", $firstName);
+        $q->bindParam(":lastName",$lastName);
+        $q->execute();
+    }
+
     public function getStudentClasses($studentID){
         $conn = $this->getConnection();
         $retval = $conn->query("SELECT class, class_code, semester FROM classes WHERE studentID='{$studentID}'", PDO::FETCH_ASSOC);
